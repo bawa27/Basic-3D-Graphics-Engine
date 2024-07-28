@@ -1,0 +1,33 @@
+import math
+import numpy as np
+
+# moving from camera space to clip space here with a projection matrix defined below
+
+class Projection:
+    def __init__(self, render):
+        NEAR = render.camera.near_plane
+        FAR = render.camera.far_plane
+        RIGHT = math.tan(render.camera.h_fov / 2)
+        LEFT = -RIGHT
+        TOP = math.tan(render.camera.v_fov / 2)
+        BOTTOM = -TOP
+
+        m00 = 2 / (RIGHT - LEFT)
+        m11 = 2 / (TOP - BOTTOM)
+        m22 = (FAR + NEAR) / (FAR - NEAR)
+        m32 = -2 * NEAR * FAR / (FAR - NEAR)
+        self.projection_matrix = np.array([
+            [m00, 0, 0, 0],
+            [0, m11, 0, 0],
+            [0, 0, m22, 1],
+            [0, 0, m32, 0]
+        ])
+
+        # matrix to fit defined screen resolution
+        hw, hh = render.H_WIDTH, render.H_HEIGHT
+        self.to_screen_matrix = np.array([
+            [hw, 0, 0, 0],
+            [0, -hh, 0, 0],
+            [0, 0, 1, 0],
+            [hw, hh, 0, 1]
+        ])
