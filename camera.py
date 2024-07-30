@@ -3,6 +3,7 @@ import math
 import pygame
 import matrix_functions as matrix
 
+
 # defining the camera and switching to "camera space" or the camera view coordinate system
 
 class Camera:
@@ -13,12 +14,12 @@ class Camera:
         self.z_move = np.array([0, 0, 1, 1])
         self.y_move = np.array([0, 1, 0, 1])
         self.x_move = np.array([1, 0, 0, 1])
-        self.h_fov = math.pi/3
+        self.h_fov = math.pi / 3
         self.v_fov = self.h_fov * (render.HEIGHT / render.WIDTH)
         self.near_plane = 0.1
         self.far_plane = 100
-        self.move_speed = 0.02
-        self.rotate_speed = 0.005
+        self.move_speed = 5
+        self.rotate_speed = 0.01
 
     # using pygame movement commands to move the camera on keypress
     def control(self):

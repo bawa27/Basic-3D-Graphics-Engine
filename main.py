@@ -18,12 +18,25 @@ class Render:
         self.create_objects()
 
     def create_objects(self):
-        # sets initial position of camera, objects etc.
-        self.camera = cam.Camera(self, [0.5, 1, -4])
+        # creates and sets initial position of camera, objects etc.
+        self.camera = cam.Camera(self, [40, 160, -900])
         self.projection = proj.Projection(self)
-        self.object = obj.Object3D(self)
-        self.object.translate([0.2, 0.4, 0.2])
-        self.object.rotate_y(math.pi/6)
+        self.object = self.get_object_from_file("objects/cat.obj")
+        self.object.rotate_y(math.pi / 4)
+        self.object.rotate_x(-math.pi / 10)
+
+    # stores and transforms .obj files for use by the engine
+    def get_object_from_file(self, filename):
+        vertex, faces = [], []
+        with open(filename) as f:
+            # list comprehensions for simplifying data transformation
+            for line in f:
+                if line.startswith('v '):
+                    vertex.append([float(i) for i in line.split()[1:]] + [1])
+                elif line.startswith('f'):
+                    faces_ = line.split()[1:]
+                    faces.append([int(face_.split('/')[0]) - 1 for face_ in faces_])
+        return obj.Object3D(self, vertex, faces)
 
     def draw(self):
         # paints background
@@ -45,10 +58,6 @@ class Render:
             self.clock.tick(self.fps)
 
 
-def main():
+if __name__ == '__main__':
     engine = Render()
     engine.run()
-
-
-if __name__ == '__main__':
-    main()

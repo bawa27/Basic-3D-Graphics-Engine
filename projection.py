@@ -1,21 +1,21 @@
 import math
 import numpy as np
 
-# moving from camera space to clip space here with a projection matrix defined below
 
+# moving from camera space to clip space here with a projection matrix defined below
 class Projection:
     def __init__(self, render):
-        NEAR = render.camera.near_plane
-        FAR = render.camera.far_plane
-        RIGHT = math.tan(render.camera.h_fov / 2)
-        LEFT = -RIGHT
-        TOP = math.tan(render.camera.v_fov / 2)
-        BOTTOM = -TOP
+        near = render.camera.near_plane
+        far = render.camera.far_plane
+        right = math.tan(render.camera.h_fov / 2)
+        left = -right
+        top = math.tan(render.camera.v_fov / 2)
+        bottom = -top
 
-        m00 = 2 / (RIGHT - LEFT)
-        m11 = 2 / (TOP - BOTTOM)
-        m22 = (FAR + NEAR) / (FAR - NEAR)
-        m32 = -2 * NEAR * FAR / (FAR - NEAR)
+        m00 = 2 / (right - left)
+        m11 = 2 / (top - bottom)
+        m22 = (far + near) / (far - near)
+        m32 = -2 * near * far / (far - near)
         self.projection_matrix = np.array([
             [m00, 0, 0, 0],
             [0, m11, 0, 0],

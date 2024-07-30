@@ -7,15 +7,13 @@ import matrix_functions as matrix
 
 
 class Object3D:
-    def __init__(self, render):
+    def __init__(self, render, vertices, faces):
         self.render = render
         # these coordinates are in the world/object coordinate system
-        self.vertices = np.array([(0, 0, 0, 1), (0, 1, 0, 1), (1, 1, 0, 1), (1, 0, 0, 1),
-                                  (0, 0, 1, 1), (0, 1, 1, 1), (1, 1, 1, 1), (1, 0, 1, 1)])
+        self.vertices = np.array(vertices)
 
         # each entry here is a different face of the cube based on the coordinates above
-        self.faces = np.array([(0, 1, 2, 3), (4, 5, 6, 7), (0, 4, 5, 1),
-                               (2, 3, 7, 6), (1, 2, 6, 5), (0, 3, 7, 4)])
+        self.faces = faces
 
     def draw(self):
         self.screen_projection()
