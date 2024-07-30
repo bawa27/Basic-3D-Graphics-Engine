@@ -1,11 +1,16 @@
 import numpy as np
 import pygame
 import matrix_functions as matrix
+import numba
+
+
+# using the numba JIT compiler to speed up performance, as even low-poly .obj files perform poorly
+@numba.jit(fastmath=True)
+def any_func(arr, a, b):
+    return np.any((arr == a) | (arr == b))
 
 
 # this class creates a cube in three dimensions using the inputted vertices
-
-
 class Object3D:
     def __init__(self, render, vertices, faces):
         self.render = render
@@ -14,6 +19,8 @@ class Object3D:
 
         # each entry here is a different face of the cube based on the coordinates above
         self.faces = faces
+        self.draw_vertices = False
+
 
     def draw(self):
         self.screen_projection()
@@ -34,12 +41,13 @@ class Object3D:
         # getting only the vertices to draw faces that haven't been cut off
         for face in self.faces:
             polygon = vertices[face]
-            if not np.any((polygon == self.render.H_WIDTH) | (polygon == self.render.H_HEIGHT)):
-                pygame.draw.polygon(self.render.screen, pygame.Color("red"), polygon, 3)
+            if not any_func(polygon, self.render.H_WIDTH, self.render.H_HEIGHT):
+                pygame.draw.polygon(self.render.screen, pygame.Color("orange"), polygon, 2)
 
-        for vertex in vertices:
-            if not np.any((vertex == self.render.H_WIDTH) | (vertex == self.render.H_HEIGHT)):
-                pygame.draw.circle(self.render.screen, pygame.Color("white"), vertex, 6)
+        if self.draw_vertices:
+            for vertex in vertices:
+                if not any_func(vertex, self.render.H_WIDTH, self.render.H_HEIGHT):
+                    pygame.draw.circle(self.render.screen, pygame.Color("white"), vertex, 4)
 
     # here, methods for transforming the object in space are outlined using the appropriate matrix
     # "@" is the same as the numpy matrix multiplication operation
