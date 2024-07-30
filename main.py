@@ -34,7 +34,7 @@ class Render:
         # program loop
         while True:
             self.draw()
-
+            self.camera.control()
             # event handler
             for i in pygame.event.get():
                 if i.type == pygame.QUIT:
