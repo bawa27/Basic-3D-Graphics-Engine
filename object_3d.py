@@ -21,7 +21,6 @@ class Object3D:
         self.faces = faces
         self.draw_vertices = False
 
-
     def draw(self):
         self.screen_projection()
 

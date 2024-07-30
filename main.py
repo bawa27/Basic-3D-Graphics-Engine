@@ -21,7 +21,7 @@ class Render:
         # creates and sets initial position of camera, objects etc.
         self.camera = cam.Camera(self, [40, 160, -900])
         self.projection = proj.Projection(self)
-        self.object = self.get_object_from_file("objects/cat.obj")
+        self.object = self.get_object_from_file("resources/objects/cat.obj")
         self.object.rotate_y(math.pi / 4)
         self.object.rotate_x(-math.pi / 10)
 
